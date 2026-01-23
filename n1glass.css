@@ -1,0 +1,1101 @@
+html {
+    --icon-filter: invert(1) !important;
+    /* white icons */
+
+    /* glass effect (bg and shadows) */
+    --glass-shadow-col: white;
+    /* i like white shadows */
+    --glass-shadow-default: 1px 1px 5px 1px var(--glass-shadow-col);
+
+    --primary-bg-col: transparent;
+    /* dialogs and such */
+    --secondary-bg-col: #0002;
+    /* input elements and such */
+
+    /* rounded corners */
+    --border-radius-small: 12px;
+    /* input elements and such*/
+    --border-radius-medium: 30px;
+    /* chat container and tooltip */
+    --border-radius-large: 50px;
+    /* dialogs and such */
+
+    --border-radius-main-menu-button: 20px;
+    --border-radius-profile-stat: 15px;
+    --border-radius-players-list: 20px;
+    /* for the list of ppl in the squad dialog */
+    --border-radius-map-item: 40px;
+    /* item in map selector */
+
+    --border-radius-shop-item: 20px;
+    /* for each shop item, separate from squad list obv */
+    --border-radius-skin-preview: 25px;
+    --border-radius-presets: 30px;
+    /* on the skin presets */
+    --border-radius-class-selection: 40px;
+    /* weapon selector and similar */
+}
+
+::selection {
+    background-color: #fff8;
+}
+
+.wrinkled-paper-mask {
+    mask: unset !important;
+    -webkit-mask: unset !important;
+}
+
+/* #region DIALOG & BUttONS*/
+
+.dialog.wrinkledPaper {
+    background: transparent;
+    border: 5px solid transparent;
+    margin: 15px 0;
+    border-radius: var(--border-radius-large);
+    border-top-left-radius: 0;
+    box-shadow: 0px 0px 20px 1px var(--glass-shadow-col);
+    backdrop-filter: blur(3px);
+}
+
+.dialog-button {
+    background: transparent;
+    box-shadow: 1px 1px 5px 1px var(--glass-shadow-col);
+    border-radius: 50px;
+    /* large border-radius for pill shape */
+    border-top-left-radius: 50px;
+    padding: 0 35px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog-button:not(:disabled):hover {
+    background-color: #0002;
+}
+
+.dialog-button span {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    transform: translateY(0.028em);
+}
+
+.in-squad-content .dialog-button:first-child {
+    margin-top: 0;
+}
+
+.in-squad-content .dialog-button:last-child {
+    margin-bottom: 25px;
+}
+
+.squad-split-section .text-with-submit-form {
+    padding: 0;
+}
+
+.squad-split-section .text-with-submit-form .dialog-button {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 0;
+    display: unset !important;
+    transition: 0.5s ease-in-out;
+    transition-property: padding, margin, opacity, font-size;
+}
+
+.squad-split-section .text-with-submit-form input.join-squad-input {
+    padding: 0;
+}
+
+.squad-split-section .text-with-submit-form .dialog-button[style*='display: none;']:not(input.join-squad-input:focus ~ .dialog-button) {
+    /* maybe a bit hacky, but idc */
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    font-size: 0;
+}
+
+.squad-split-section .text-with-submit-form .dialog-text-input {
+    margin-right: 5px;
+}
+
+/* #endregion */
+
+/* #region SEttINGS & GENERAL INPUt */
+h3.settings-group-header {
+    /* box-shadow: 0 2px 2px 1px var(--glass-shadow-col); */
+    border-bottom: 3px solid var(--glass-shadow-col);
+    background: #0001;
+    border-radius: var(--border-radius-small);
+    padding-left: 10px;
+    backdrop-filter: blur(10px);
+    text-shadow: 1px 1px 5px #0004;
+    margin-bottom: 10px;
+    pointer-events: all;
+    margin-left: 2px;
+    /* prevent hidden box-shadow */
+    margin-right: 1px;
+}
+
+.dialog-text-input,
+.dialog-select-wrapper,
+.dialog-checkbox-input,
+.dialog-toggle-input,
+input.dialog-range-input[type='range'],
+.dialog-color-input {
+    background: var(--secondary-bg-col);
+    box-shadow: 1px 1px 5px 1px var(--glass-shadow-col);
+    border-radius: var(--border-radius-small);
+}
+
+input.dialog-color-input::-webkit-color-swatch {
+    border-radius: calc(var(--border-radius-small) - 5px);
+    /* account for slight inset */
+}
+
+input:not(.dialog-range-input, .dialog-text-input) {
+    cursor: pointer;
+    background: #0002 !important;
+}
+
+input:disabled {
+    cursor: default !important;
+}
+
+input.dialog-text-input {
+    cursor: text;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+input.dialog-text-input:focus {
+    box-shadow: 1px 1px 5px 2px var(--glass-shadow-col);
+}
+
+@keyframes o-one {
+    100% {
+        --pos: 1;
+    }
+}
+
+@property --pos {
+    syntax: '<number>';
+    initial-value: 0;
+    inherits: true;
+}
+
+div.settings-item-slider {
+    height: 34px;
+    position: relative;
+
+    --thumb-s: 23px;
+
+    animation-name: o-one;
+    animation-timeline: --thumb-v;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    timeline-scope: --thumb-v;
+    animation-direction: reverse;
+}
+
+input.dialog-range-input::before,
+input.dialog-range-input::after {
+    content: '';
+    position: absolute;
+    height: 4px;
+    box-shadow: 1px 1px 5px 2px white;
+    top: 50px;
+    transform: translateY(-50%);
+}
+
+input.dialog-range-input::before {
+    left: 5px;
+
+    width: max(calc(100% * var(--pos) - var(--thumb-s) / 2 - 5px),
+            0px);
+    /* 0px needs a unit here idk why*/
+    border-radius: var(--border-radius-small) 0 0 var(--border-radius-small);
+    clip-path: polygon(-10px -10px,
+            -10px calc(100% + 10px),
+            100% calc(100% + 10px),
+            100% -10px);
+}
+
+input.dialog-range-input::after {
+    right: 5px;
+
+    width: max(calc(100% * (1 - var(--pos)) - var(--thumb-s) / 2 - 5px),
+            0px);
+    /* 0px needs a unit here, idk why */
+    clip-path: polygon(0 -10px,
+            0 calc(100% + 10px),
+            calc(100% + 10px) calc(100% + 10px),
+            calc(100% + 10px) -10px);
+}
+
+input.dialog-range-input[type='range'] {
+    background: none;
+    /* don't wanna see the background */
+    overflow: hidden;
+    /* ensure view-timeline animation works properly*/
+    position: relative;
+    /* ::before & ::after positioning */
+    padding: 0 4px;
+    /* path of thumb (::before & ::after) doesn't disappear behind it */
+    box-sizing: border-box;
+    /* ensure it stays correct dimensions (with padding) */
+    box-shadow: none;
+}
+
+input.dialog-range-input::-webkit-slider-thumb {
+    background: transparent !important;
+    box-shadow: 1px 1px 5px 2px white;
+    height: var(--thumb-s) !important;
+    width: var(--thumb-s) !important;
+    cursor: pointer;
+    border-radius: 50%;
+    /* circle shape */
+
+    view-timeline-name: --thumb-v;
+    view-timeline-axis: x;
+    view-timeline-inset: calc(var(--thumb-s) / 2) calc(var(--thumb-s) / 2);
+}
+
+.dialog-checkbox-input:disabled {
+    box-shadow: 1px 1px 5px 1px hsv(from var(--glass-shadow-col) h s calc(v - 20));
+}
+
+.settings-list div {
+    overflow: visible;
+}
+
+.linked-accounts {
+    overflow: visible;
+}
+
+.linked-accounts .wrinkledPaper {
+    background: #0002;
+    box-shadow: 1px 1px 5px 1px var(--glass-shadow-col);
+    border-radius: calc(var(--border-radius-small) + 3px);
+    /* slightly more border-radius (is also larger than input elements)*/
+    margin-bottom: 8px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.linked-accounts .dialog-button {
+    margin-right: 8px;
+}
+
+label:has(:disabled) {
+    color: #ddd;
+}
+
+.account-buttons .dialog-button:first-child {
+    margin-top: 10px;
+}
+
+.dialog-button.danger {
+    background-color: #f002;
+}
+
+.dialog-button.danger:hover {
+    background-color: #d002;
+}
+
+/* #endregion */
+
+/* #region SQUAD */
+
+div.squad-players-list {
+    background: transparent !important;
+    border-radius: var(--border-radius-players-list);
+    margin-right: 8px;
+    box-shadow: 1px 1px 10px 1px var(--glass-shadow-col);
+    mask: initial;
+}
+
+.itemsTable>tbody>tr:nth-child(even) {
+    background: var(--items-table-odd-row-color);
+}
+
+/* #endregion */
+
+/* #region SHOP */
+
+.shopDialogContent div.dialog-select-wrapper {
+    margin-right: 5px;
+}
+
+div.currency-container {
+    align-items: flex-start;
+}
+
+.game-over-stats-coins-container .currency-container {
+    align-items: center;
+}
+
+div.ownedCoinsContainer {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    padding: 10px 20px;
+    /* filter: var(--default-drop-shadow); */
+    background: transparent;
+    box-shadow: 1px 1px 5px 1px white;
+    border-radius: 50px;
+    /* pill shape */
+}
+
+div.stat-class-tooltip {
+    background: transparent;
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-medium);
+    box-shadow: 1px 1px 5px 1px var(--glass-shadow-col);
+    padding: 30px !important;
+}
+
+.shop-paged-view-container {
+    width: 380px;
+}
+
+.shop-items-grid-view {
+    grid-gap: 10px;
+    padding: 10px 10px;
+}
+
+div.shop-skin-preview {
+    background: transparent !important;
+    --wrinkled-paper-wrinkle-size: 0;
+    --wrinkled-paper-tear-count-min: 0;
+    --wrinkled-paper-tear-count-max: 0;
+}
+
+canvas.shop-skin-preview-canvas {
+    border-radius: var(--border-radius-skin-preview);
+}
+
+button.shopItem {
+    background-image: radial-gradient(at 0px 0px,
+            transparent 0px,
+            transparent 0px);
+    border-radius: var(--border-radius-shop-item);
+    box-shadow: 0px 0px 5px 1px var(--glass-shadow-col);
+}
+
+button.shopItem:hover {
+    background: radial-gradient(at 20px 20px, #fff6 5px, #fff4 30px);
+}
+
+div.class-selection-image-container {
+    background: transparent;
+    overflow: visible;
+    mask: initial;
+    border-radius: var(--border-radius-class-selection);
+    pointer-events: none;
+    z-index: auto;
+}
+
+div.class-selection-image-background {
+    background: rgba(from var(--wrinkled-paper-color) r g b / 0.2);
+    border-radius: var(--border-radius-class-selection);
+    /* box-shadow: 2px 2px 0 5px var(--wrinkled-paper-color); */
+    /* margin: 15px 5px 18px 2px; */
+    z-index: 10;
+    box-sizing: border-box;
+    border: 3px solid var(--wrinkled-paper-color);
+    --border-thickness: 8px;
+    border-bottom-width: var(--border-thickness);
+    border-right-width: var(--border-thickness);
+    margin: 15px 0;
+}
+
+div.class-selection-image {
+    z-index: 30;
+}
+
+div.shop-class-selection-item {
+    min-height: unset;
+    height: auto;
+    aspect-ratio: 1;
+}
+
+.shop-class-selection-item .dialogTitle {
+    text-align: center;
+    margin-bottom: 0;
+    position: absolute;
+    top: 2px;
+    left: 0px;
+    width: 100%;
+    max-height: 80%;
+    font-size: 32px;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.shop-class-selection-item .dialog-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: none;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius-class-selection);
+    box-shadow: none;
+    z-index: 40;
+}
+
+.shop-skin-selection-item {
+    min-height: fit-content;
+    --bg-inset: 20px;
+}
+
+.shop-skin-selection-image {
+    mask: none;
+    -webkit-mask: none;
+    box-shadow: 0px 0px 5px 5px #24a3dd;
+    border-radius: var(--border-radius-presets);
+}
+
+button.shop-skin-selection-edit-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(50px) brightness(1);
+    transition: filter 0.3s;
+    transform: none;
+    border-radius: var(--border-radius-presets);
+    box-shadow: none;
+}
+
+button.shop-skin-selection-edit-button:not(:disabled):hover {
+    filter: blur(0px) brightness(1);
+    background-color: transparent;
+}
+
+.shop-skin-selection-image:has(+ .shop-skin-selection-edit-button:hover) {
+    filter: brightness(0.9);
+}
+
+button.corner-delete-button {
+    padding: 10px;
+    top: 15px;
+    right: 15px;
+}
+
+.shop-skin-selection-item .dialog-button.shop-skin-selection-edit-button:has(~ button[aria-label*='Delete preset']) {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 300px;
+    position: absolute;
+    /* inset: 0; */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    background: transparent !important;
+}
+
+.shop-skin-selection-list:has(button[aria-label*='Delete preset']) {
+    perspective: 500px;
+    overflow-y: hidden;
+}
+
+.shop-skin-selection-item:first-child:has(button[aria-label*='Delete preset']) {
+    margin-left: 250px;
+}
+
+button.shop-skin-selection-list-add-button {
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+.shop-skin-selection-item:has(button[aria-label*='Delete preset']) {
+    transform-style: preserve-3d;
+    animation-name: carRot, carPos;
+    animation-timing-function: linear, ease-in-out;
+    animation-timeline: view(inline);
+    view-timeline-axis: inline;
+    animation-fill-mode: both;
+}
+
+@keyframes carRot {
+    0% {
+        transform: rotateY(55deg);
+    }
+
+    100% {
+        transform: rotateY(-55deg);
+    }
+}
+
+@keyframes carPos {
+    0% {
+        translate: 0 0 -200px;
+    }
+
+    50% {
+        translate: 0 0 0;
+    }
+
+    100% {
+        translate: 0 0 -200px;
+    }
+}
+
+.shop-skin-selection-image:has(~ .corner-delete-button[aria-label*='Delete preset']):not([style*='background-image: url(']) {
+    box-shadow: 0 0 5px 5px white;
+}
+
+.shop-skin-selection-image:has(~ .corner-delete-button[aria-label*='Delete preset']) {
+    background: transparent;
+}
+
+input.dialog-toggle-input[type='checkbox'] {
+    position: relative;
+    width: 60px;
+    backdrop-filter: none !important;
+}
+
+input.dialog-toggle-input[type='checkbox']:active {
+    filter: none;
+}
+
+input.dialog-toggle-input[type='checkbox']::before,
+input.dialog-toggle-input[type='checkbox']::after {
+    content: '';
+    height: 100%;
+    width: 29px;
+    border-radius: var(--border-radius-small);
+    left: 0;
+    transform: translateX(0);
+    position: absolute;
+    transition: 0.2s ease-in-out;
+    transition-property: left, transform, width;
+    pointer-events: none;
+}
+
+input.dialog-toggle-input[type='checkbox']::before {
+    background: black;
+    z-index: 10;
+}
+
+input.dialog-toggle-input[type='checkbox']:checked::before,
+input.dialog-toggle-input[type='checkbox']:checked::after {
+    left: 100%;
+    transform: translateX(-100%);
+    width: 26px;
+}
+
+input.dialog-toggle-input[type='checkbox']::after {
+    background: transparent;
+    backdrop-filter: invert(1);
+    z-index: 30;
+}
+
+div.shop-gender-toggle-container {
+    position: relative;
+}
+
+div.gender-icon {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+}
+
+div.gender-icon.male {
+    left: 4.5px;
+    scale: 0.9;
+}
+
+div.gender-icon.female {
+    right: 3.5px;
+}
+
+/* preview for buying shop items */
+div.shopItemUsage-preview {
+    box-shadow: none;
+    border-radius: var(--border-radius-class-selection);
+    background: transparent !important;
+}
+
+/* #endregion */
+
+/* #region SCROLL BAR */
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    padding: 5px;
+    background: #0002;
+    overflow: visible !important;
+    position: absolute;
+}
+
+::-webkit-scrollbar-thumb {
+    --bg-col: white;
+    background: var(--bg-col);
+    box-shadow: 1px 1px 20px 20px var(--bg-col);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    --bg-col: #aaa;
+}
+
+/* #endregion */
+
+/* #region MAP SELECtOR */
+
+div.map-item {
+    --title-layer-depth: 1;
+    z-index: auto;
+    position: relative;
+    mask: paint(wrinkledPaper);
+    --wrinkled-paper-wrinkle-size: 0px;
+    --wrinkled-paper-tear-count-min: 0;
+    --wrinkled-paper-tear-count-max: 0;
+    border-radius: var(--border-radius-map-item);
+    filter: var(--default-drop-shadow);
+}
+
+div.map-item-thumb-layer {
+    --_m: 3.35544e7;
+    --_u: calc(var(--layer-offset) * var(--_m));
+    --unit: calc(var(--_u) / var(--_m));
+    --unitless-val: tan(atan2(var(--layer-offset), var(--unit)));
+    z-index: var(--unitless-val);
+}
+
+/*div.map-item-thumb-layer:last-child {
+    z-index: 200;
+} */
+
+div.map-item-thumb-layer[style*='narrowDesert/6.webp'] {
+    --layer-offset: -40px !important;
+}
+
+div.map-item-thumb-layer[style*='narrowGatehouse/5.webp'] {
+    translate: -80px -50px;
+}
+
+div.map-item-thumb-layer[style*='narrowFields/4.webp'] {
+    translate: 20px 70px;
+}
+
+div.map-item-thumb-layer[style*='narrowGraveyard/2.webp'] {
+    translate: -5px 0;
+}
+
+div.map-item-thumb-layer[style*='narrowFields/3.webp'] {
+    translate: 7px 0;
+}
+
+button.map-item-join-button {
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: none;
+    z-index: calc(104 - calc(var(--title-layer-depth) * 10));
+    border-radius: var(--border-radius-map-item);
+    transition: background 0.1s ease-in-out;
+}
+
+.map-item-join-button span {
+    filter: blur(1000px);
+}
+
+button.map-item-join-button:hover {
+    background: #0004;
+}
+
+.dialog:has(.maps-container)::before {
+    content: 'map selector';
+    top: 20px;
+    left: 0;
+    font-family: 'BlueNight';
+    font-size: 70px;
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+
+div.map-item-thumb {
+    width: 200px;
+    height: 200px;
+    z-index: auto;
+    position: relative;
+    mask: initial;
+    -webkit-mask: initial;
+    filter: initial;
+}
+
+div.maps-container {
+    grid-template-columns: 200px 200px 200px;
+    column-gap: 30px;
+    row-gap: 30px;
+}
+
+.map-item-title {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    /* z-index: 199; */
+    z-index: calc(105 - calc(var(--title-layer-depth) * 10));
+    pointer-events: none;
+    width: 100%;
+    padding: 0 10px;
+    text-align: center;
+    box-sizing: border-box;
+    text-shadow: 0 0 10px #0004;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowForts/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowHalls/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowTombs/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowGraveyard/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowArena/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowTowers/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowArch/']) {
+    --title-layer-depth: 4;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowRuins/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowHills/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowJungle/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowWall/']) {
+    --title-layer-depth: 3;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowTemple/']) {
+    --title-layer-depth: 2;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowDesert/']) {
+    --title-layer-depth: 5;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowTribe/']) {
+    --title-layer-depth: 3;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowSnowyStronghold/']) {
+    --title-layer-depth: 0;
+}
+
+div.map-item:has(.map-item-thumb-layer[style*='/config/mapThumbs/narrowMegaParkour/']) {
+    --title-layer-depth: 2;
+}
+
+@property --title-layer-depth {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 1;
+}
+
+div.map-item-thumb-layer:nth-last-child(1) {
+    z-index: 100 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(2) {
+    z-index: 90 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(3) {
+    z-index: 80 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(4) {
+    z-index: 70 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(5) {
+    z-index: 60 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(6) {
+    z-index: 50 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(7) {
+    z-index: 40 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(8) {
+    z-index: 30 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(9) {
+    z-index: 20 !important;
+}
+
+div.map-item-thumb-layer:nth-last-child(10) {
+    z-index: 10 !important;
+}
+
+/* #endregion */
+
+/* #region MAIN MENU */
+
+button.main-menu-button {
+    background: transparent;
+    box-shadow: 0 0 5px 1px var(--glass-shadow-col);
+    border-radius: var(--border-radius-main-menu-button);
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+button.main-menu-button::before {
+    content: '';
+    position: absolute;
+    height: calc(100% + 20px);
+    width: 100%;
+    --bg-col: #fff4;
+    background-image: linear-gradient(var(--bg-col) 0,
+            var(--bg-col) calc(100% - 19px),
+            transparent 100%);
+    left: 0;
+    top: 0;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-out;
+}
+
+.main-menu-button:hover::before {
+    transform: translateY(0);
+}
+
+.main-menu-button:has(.update-icon)::before {
+    --bg-col: #0f02 !important;
+}
+
+.main-menu-button[aria-label*='Exit Round']::before {
+    --bg-col: #f003 !important;
+}
+
+div.main-menu-promo-banner {
+    border-radius: 30px;
+}
+
+div.main-menu-promo-banner-container>.dialog-button {
+    z-index: -1;
+    transform: translate(-50%, 100%);
+    bottom: 0;
+    left: 50%;
+    border-radius: 0 0 20px 20px;
+}
+
+/* #endregion */
+
+/* #region StAtS */
+
+.profile-container:has(~ .profile-stats) {
+    margin-bottom: 15px;
+}
+
+.profile-container input.dialog-text-input {
+    text-align: center;
+    height: unset;
+    margin: 0 6.5px 0 10px;
+    transition: 0.4s ease-in-out;
+    transition-property: width, padding-right;
+    box-sizing: content-box;
+    padding: 7px;
+    padding-right: 40px;
+}
+
+.profile-container .input-visible input.dialog-text-input {
+    padding-right: 7px;
+}
+
+.profile-container form.editable.input-visible .profile-stats {
+    margin-top: 20px;
+}
+
+.profile-container button.edit-button[aria-label*='edit username'] {
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+    transform: translate(-58px, -3%) scale(1.4);
+    /* position: relative; */
+    transform-origin: 0 100%;
+    /* scale: 1.2; */
+    pointer-events: none;
+    cursor: default !important;
+}
+
+.profile-container .input-visible button.edit-button[aria-label*='edit username'] {
+    opacity: 0;
+    display: initial;
+}
+
+.profile-stat {
+    background: transparent;
+    box-shadow: 1px 1px 5px 1px var(--glass-shadow-col);
+    border-radius: var(--border-radius-profile-stat);
+    transform: scale(1.01);
+    transition: transform 0.5s cubic-bezier(0.75, 0, 0.25, 1);
+}
+
+.profile-stat:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.profile-stat:nth-child(even) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    transform-origin: 0 50%;
+}
+
+.profile-stat:nth-child(odd) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    transform-origin: 100% 50%;
+}
+
+.profile-stat:nth-child(1) {
+    border-top-right-radius: 15px;
+    transform-origin: 100% 100%;
+}
+
+.profile-stat:nth-child(2) {
+    border-top-left-radius: 15px;
+    transform-origin: 0 100%;
+}
+
+.profile-stat:nth-last-child(1):nth-child(even) {
+    border-bottom-left-radius: 15px;
+    transform-origin: 0 0;
+}
+
+.profile-stat:last-child:nth-child(odd),
+.profile-stat:nth-last-child(2):nth-child(odd) {
+    border-bottom-right-radius: 15px;
+    transform-origin: 100% 0;
+}
+
+/* #endregion */
+
+/* #region IN-GAME UI */
+
+.class-selection-image-container.in-game>.class-selection-image {
+    border-radius: calc(var(--border-radius-class-selection) / 2);
+}
+
+div.chat-container {
+    background: transparent;
+    box-shadow: 1px 1px 7px 2px white;
+    border-radius: var(--border-radius-medium);
+    border-top-left-radius: 0;
+}
+
+/* #endregion */
+
+/* #region HEALtH BAR */
+
+.health-ui-container {
+    background: none;
+}
+
+.health-ui-bar {
+    border-radius: 50px 50px 50px 0px;
+    /* ensure pill shape but still behind heart */
+    background: transparent;
+}
+
+.health-ui-bar.main {
+    background: rgba(from var(--wrinkled-paper-color) r g b / 1);
+}
+
+.health-ui-bar.border {
+    background: rgba(from var(--wrinkled-paper-border-color) r g b / 0.3);
+    box-shadow: 1px 1px 5px 2px white;
+}
+
+.health-ui-bar.damage-protection {
+    background-color: white;
+}
+
+.health-ui-heart {
+    scale: 1.5;
+    translate: 0px;
+}
+
+.health-ui-heart path:first-child {
+    fill: transparent !important;
+}
+
+.health-ui-heart path:last-child {
+    translate: 0 -2px;
+    fill: #fff0;
+    stroke: #ccc;
+    stroke-width: 6px;
+    filter: drop-shadow(1px 1px 5px whitee);
+}
+
+/* #endregion */
+
+/* #region PLAYERS LISt */
+
+div.playersListContainer {
+    /*box-shadow: 1px 1px 7px 2px var(--glass-shadow-col);*/
+    border-radius: var(--border-radius-players-list);
+    padding: 0px;
+    overflow: visible;
+}
+
+div.playersListContainer div.playersListTeam {
+    background: transparent !important;
+    border-radius: var(--border-radius-players-list);
+    overflow: hidden;
+    /*box-shadow: 1px 1px 5px 1px var(--glass-shadow-col);*/
+}
+
+div.playersListContainer div.playersListTeam thead {
+    background: rgba(from var(--wrinkled-paper-color) r g b / 0.5) !important;
+    box-sizing: border-box;
+    border-bottom: 5px dashed var(--wrinkled-paper-col);
+}
+
+/* #endregion */
+
+div.gameOverStatsContainer {
+    background: transparent !important;
+    border: 5px solid hsl(from var(--wrinkled-paper-color) h s calc(l + 17));
+    border-right: none;
+    border-left: none;
+}
+
+div.skipDialogText {
+    bottom: -5px;
+}
