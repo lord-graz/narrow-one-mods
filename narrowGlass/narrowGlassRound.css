@@ -258,7 +258,7 @@ input.dialog-range-input::-webkit-slider-thumb {
 }
 
 .dialog-checkbox-input:disabled {
-    box-shadow: 1px 1px 5px 1px hsv(from var(--glass-shadow-col) h s calc(v - 20));
+    box-shadow: 1px 1px 5px 1px hsl(from var(--glass-shadow-col) h s calc(l - 20));
 }
 
 .settings-list div {
