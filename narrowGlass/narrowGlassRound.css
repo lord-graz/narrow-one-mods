@@ -200,7 +200,7 @@ input.dialog-range-input::after {
     position: absolute;
     height: 4px;
     box-shadow: 1px 1px 5px 2px white;
-    top: 50px;
+    top: 50%;
     transform: translateY(-50%);
 }
 
