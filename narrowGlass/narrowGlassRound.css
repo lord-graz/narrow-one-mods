@@ -1015,7 +1015,6 @@ div.chat-container {
     background: transparent;
     box-shadow: 1px 1px 7px 2px white;
     border-radius: var(--border-radius-medium);
-    border-top-left-radius: 0;
 }
 
 /* #endregion */
