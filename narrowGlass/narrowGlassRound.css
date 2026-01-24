@@ -383,6 +383,11 @@ button.shopItem:hover {
     background: radial-gradient(at 20px 20px, #fff6 5px, #fff4 30px);
 }
 
+button.shopItem.selected {
+    box-shadow: 0 0 10px 4px var(--glass-shadow-col);
+    background: radial-gradient(at 20px 20px, #fff4 5px, #fff1 30px);
+}
+
 div.class-selection-image-container {
     background: transparent;
     overflow: visible;
