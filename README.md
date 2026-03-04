@@ -11,7 +11,7 @@ Pure CSS mod that makes the UI feel like glass, loosely inspired by Apple's Liqu
 <img src="/img/narrowGlass.png" width="400" style="border-radius: 20vw"/>  
   
 ### <a href="showItemNameInTooltip">Show Item Name in Tooltip</a>  
-JS script to show the name of shop items in their stat tooltip. This can be useful if you want to switch armor/weapons midgame, but the 3D models that are needed for you to see what you are equipping load too slowly, or if you're just interested in easily seeing what the names of the shop items are :) .  
+JS script to show the name of shop items in their stat tooltip. This can be useful if you want to switch armor/weapons midgame, but the 3D models (needed for you to see what you are equipping) load too slowly, or if you're just interested in easily seeing what the names of the shop items are :) .  
   
 <img src="/img/showItemNameInTooltip.png" width="400" style="border-radius: 20vw"/>  
   
