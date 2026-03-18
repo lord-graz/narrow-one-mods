@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Preset Names
+// @name         Rename Presets
 // @namespace    http://tampermonkey.net/
 // @version      2026-03-14
 // @description  Allows modification of preset names.
@@ -11,6 +11,7 @@
 // ==/UserScript==
 
 (function () {
+    console.log("running renamePresets.js")
     // jesper's code
     class indexedDbManager {
         constructor(t = "keyValuesDb", { objectStoreNames: e = ["keyValues"] } = {}) {
@@ -96,19 +97,12 @@
     let currentPreset = 0
     const presetThingObserver = new MutationObserver(mutationList => {
         mutationList.forEach(mutation => {
-            console.log("Added Nodes:", mutation.addedNodes, "\nmutation:", mutation)
             mutation.addedNodes.forEach(e => {
                 if (typeof e.querySelectorAll === 'function') {
                     e.querySelectorAll(".dialog-select-input option").forEach(node => {
-                        console.log(node, node.nodeType, node.nodeType != Node.TEXT_NODE)
-                        // if (node.nodeType != Node.TEXT_NODE) return;
-                        console.log(node.textContent)
                         replacePresetText(node)
                     })
                     e.querySelectorAll(".paged-view-page-header .paged-view-page-header-title").forEach(node => {
-                        console.log(node, node.nodeType, node.nodeType != Node.TEXT_NODE)
-                        // if (node.nodeType != Node.TEXT_NODE) return;
-                        console.log(node.textContent)
                         replacePresetText(node, true)
                     })
                 }
@@ -143,17 +137,14 @@
                 })
             })
         })
-        console.log("Current preset:", currentPreset)
     })
 
     const gameWrapperObserver = new MutationObserver(() => {
         const dialog = document.querySelector(".dialog:has( .shop-class-selection-container):has( .ownedCoinsContainer.allow-select)")
         if (dialog) {
             presetThingObserver.observe(dialog, { subtree: true, childList: true })
-            console.log("observing for presets!")
         } else {
             presetThingObserver.disconnect()
-            console.log("disconnected observer for presets")
         }
     })
     gameWrapperObserver.observe(document.querySelector("#gameWrapper"), { childList: true })
