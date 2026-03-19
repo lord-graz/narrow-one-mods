@@ -50,7 +50,7 @@
     content: "";
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 101 104'%3E%3Cpath class='fg' d='M78.92 38.154c-14.928-13.261-28.075 9.169-28.075 9.169s-12.7-21.638-27.622-8.376c-14.212 12.624-.877 25.725 5.322 32.377 6.44 6.911 21.905 13.981 21.905 13.981s15.041-7.183 21.482-14.094c6.197-6.653 21.201-20.432 6.988-33.057z' style='fill: red)'%3E%3C/path%3E%3C/svg%3E");
     position: absolute;
-    left: 2px;
+    right: 2px;
     top: 0;
     height: 30px;
     width: 30px;
