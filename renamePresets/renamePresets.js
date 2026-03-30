@@ -96,19 +96,12 @@
     let currentPreset = 0
     const presetThingObserver = new MutationObserver(mutationList => {
         mutationList.forEach(mutation => {
-            console.log("Added Nodes:", mutation.addedNodes, "\nmutation:", mutation)
             mutation.addedNodes.forEach(e => {
                 if (typeof e.querySelectorAll === 'function') {
                     e.querySelectorAll(".dialog-select-input option").forEach(node => {
-                        console.log(node, node.nodeType, node.nodeType != Node.TEXT_NODE)
-                        // if (node.nodeType != Node.TEXT_NODE) return;
-                        console.log(node.textContent)
                         replacePresetText(node)
                     })
                     e.querySelectorAll(".paged-view-page-header .paged-view-page-header-title").forEach(node => {
-                        console.log(node, node.nodeType, node.nodeType != Node.TEXT_NODE)
-                        // if (node.nodeType != Node.TEXT_NODE) return;
-                        console.log(node.textContent)
                         replacePresetText(node, true)
                     })
                 }
@@ -145,26 +138,21 @@
                 setTimeout(modifyButtons, 1, node)
 
                 function modifyButtons(node) {
-                    console.log("modifying buttons")
                     if (node.matches(".shop-skin-selection-item")) {
-                        console.log("matching 1")
                         const idx = [...node.parentElement.children].indexOf(node)
                         modifyButton(node.querySelector(".shop-skin-selection-edit-button"), idx)
                     }
                     node.querySelectorAll(".shop-skin-selection-item").forEach((e, idx) => {
-                        console.log("matching 2")
                         modifyButton(e.querySelector(".shop-skin-selection-edit-button"), idx)
                     })
                 }
                 async function modifyButton(button, idx) {
                     if (button?._modified) return;
-                    console.log("modifying button")
                     button.textContent = (await indexedDb.get("skinPresets"))[idx].name || addPresetName(idx);
                     button._modified = true
                 }
             })
         })
-        console.log("Current preset:", currentPreset)
     })
 
     let isObservingPresets = false;
@@ -173,11 +161,9 @@
         if (dialog && isObservingPresets === false) {
             presetThingObserver.observe(dialog, { subtree: true, childList: true })
             isObservingPresets = true;
-            console.log("observing for presets!")
         } else if (!dialog) {
             presetThingObserver.disconnect()
             isObservingPresets = false;
-            console.log("disconnected observer for presets")
         }
     })
     gameWrapperObserver.observe(document.querySelector("#gameWrapper"), { childList: true })
