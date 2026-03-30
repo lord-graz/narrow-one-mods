@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Rename Presets
+// @name         Preset Names
 // @namespace    http://tampermonkey.net/
-// @version      2026-03-14
+// @version      2026-03-30
 // @description  Allows modification of preset names.
 // @author       Lord Graz
 // @match        https://narrow.one/
@@ -11,7 +11,6 @@
 // ==/UserScript==
 
 (function () {
-    console.log("running renamePresets.js")
     // jesper's code
     class indexedDbManager {
         constructor(t = "keyValuesDb", { objectStoreNames: e = ["keyValues"] } = {}) {
@@ -97,20 +96,27 @@
     let currentPreset = 0
     const presetThingObserver = new MutationObserver(mutationList => {
         mutationList.forEach(mutation => {
+            console.log("Added Nodes:", mutation.addedNodes, "\nmutation:", mutation)
             mutation.addedNodes.forEach(e => {
                 if (typeof e.querySelectorAll === 'function') {
                     e.querySelectorAll(".dialog-select-input option").forEach(node => {
+                        console.log(node, node.nodeType, node.nodeType != Node.TEXT_NODE)
+                        // if (node.nodeType != Node.TEXT_NODE) return;
+                        console.log(node.textContent)
                         replacePresetText(node)
                     })
                     e.querySelectorAll(".paged-view-page-header .paged-view-page-header-title").forEach(node => {
+                        console.log(node, node.nodeType, node.nodeType != Node.TEXT_NODE)
+                        // if (node.nodeType != Node.TEXT_NODE) return;
+                        console.log(node.textContent)
                         replacePresetText(node, true)
                     })
                 }
             })
-            function replacePresetText(node, isHeader = false) {
+            async function replacePresetText(node, isHeader = false) {
                 if (node.textContent.match(/^Preset \d+$/)) {
                     currentPreset = parseInt(node.textContent.slice(7))
-                    node.textContent = presets[currentPreset - 1].name
+                    node.textContent = ((await indexedDb.get("skinPresets"))[currentPreset - 1].name) || addPresetName(currentPreset - 1)
 
                     if (isHeader) {
                         node.classList.add("preset-header")
@@ -124,7 +130,7 @@
                                 ? `Preset ${currentPreset}`
                                 : node.textContent
                             presets[currentPreset - 1].name = node.textContent
-                            indexedDb.set("skinPresets", presets)
+                            indexedDb.getSet("skinPresets", e => { e[currentPreset - 1].name = node.textContent; return e })
                         })
                     }
                 }
@@ -132,19 +138,46 @@
             mutation.addedNodes.forEach(node => {
                 if (node.nodeType != Node.ELEMENT_NODE) return;
                 if (!node.matches('div:has( [aria-label="Delete preset"])')) return;
-                node.querySelectorAll(".shop-skin-selection-item").forEach((e, idx) => {
-                    e.querySelector(".shop-skin-selection-edit-button").textContent = presets[idx].name
-                })
+
+                modifyButtons(node)
+                // just in case, because new elements get created by the game
+                // when adding/removing presets, idk why
+                setTimeout(modifyButtons, 1, node)
+
+                function modifyButtons(node) {
+                    console.log("modifying buttons")
+                    if (node.matches(".shop-skin-selection-item")) {
+                        console.log("matching 1")
+                        const idx = [...node.parentElement.children].indexOf(node)
+                        modifyButton(node.querySelector(".shop-skin-selection-edit-button"), idx)
+                    }
+                    node.querySelectorAll(".shop-skin-selection-item").forEach((e, idx) => {
+                        console.log("matching 2")
+                        modifyButton(e.querySelector(".shop-skin-selection-edit-button"), idx)
+                    })
+                }
+                async function modifyButton(button, idx) {
+                    if (button?._modified) return;
+                    console.log("modifying button")
+                    button.textContent = (await indexedDb.get("skinPresets"))[idx].name || addPresetName(idx);
+                    button._modified = true
+                }
             })
         })
+        console.log("Current preset:", currentPreset)
     })
 
+    let isObservingPresets = false;
     const gameWrapperObserver = new MutationObserver(() => {
         const dialog = document.querySelector(".dialog:has( .shop-class-selection-container):has( .ownedCoinsContainer.allow-select)")
-        if (dialog) {
+        if (dialog && isObservingPresets === false) {
             presetThingObserver.observe(dialog, { subtree: true, childList: true })
-        } else {
+            isObservingPresets = true;
+            console.log("observing for presets!")
+        } else if (!dialog) {
             presetThingObserver.disconnect()
+            isObservingPresets = false;
+            console.log("disconnected observer for presets")
         }
     })
     gameWrapperObserver.observe(document.querySelector("#gameWrapper"), { childList: true })
@@ -164,17 +197,23 @@
 
         .preset-header {
             position: relative;
-            margin: 5px 0;
-            padding: 10px 15px;
             border-radius: 15px;
+            margin: -0.1em 0;
+            padding: 0px 15px;
+            
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
-        
+            
         .preset-header:hover:not(:focus) {
             filter: brightness(0.9);
             cursor: pointer;
         }
-
+                
         .preset-header:focus {
+            margin: 5px 0;
+            padding: 10px 15px;
             outline: 5px solid var(--blue-highlight-color);
         }
 
@@ -182,18 +221,30 @@
             content: "";
             background-image: url("static/img/edit.svg");
             filter: var(--icon-filter);
-            width: 40px;
-            height: 40px;
 
-            position: absolute;
-            left: calc(100% - 15px);
-            top: -20%;
+            width: 1.5em;
+            height: 1.5em;
+            display: inline-block;
+
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
         .preset-header:focus::after {
             visibility: hidden;
+            width: 0px;
+            height: 0px;
         }
 
     `)
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet]
+
+    function addPresetName(idx) {
+        const newName = `Preset ${idx + 1}`
+        indexedDb.getSet("skinPresets", e => {
+            e[idx].name = newName;
+            return e;
+        })
+        return newName
+    }
 })();
