@@ -99,17 +99,21 @@
             mutation.addedNodes.forEach(e => {
                 if (typeof e.querySelectorAll === 'function') {
                     e.querySelectorAll(".dialog-select-input option").forEach(node => {
+                        // if (node.nodeType != Node.TEXT_NODE) return;
                         replacePresetText(node)
                     })
                     e.querySelectorAll(".paged-view-page-header .paged-view-page-header-title").forEach(node => {
+                        // if (node.nodeType != Node.TEXT_NODE) return;
                         replacePresetText(node, true)
                     })
                 }
             })
             async function replacePresetText(node, isHeader = false) {
                 if (node.textContent.match(/^Preset \d+$/)) {
-                    currentPreset = parseInt(node.textContent.slice(7))
-                    node.textContent = ((await indexedDb.get("skinPresets"))[currentPreset - 1].name) || addPresetName(currentPreset - 1)
+                    // prevent "slow" functions calls from all using the same currentPreset variable
+                    const localCurrentPreset = parseInt(node.textContent.split(" ")[1])
+                    currentPreset = localCurrentPreset
+                    node.textContent = ((await indexedDb.get("skinPresets"))[localCurrentPreset - 1].name) || (await addPresetName(localCurrentPreset - 1))
 
                     if (isHeader) {
                         node.classList.add("preset-header")
@@ -120,10 +124,10 @@
                         node.blur()
                         node.addEventListener("blur", e => {
                             node.textContent = node.textContent == ""
-                                ? `Preset ${currentPreset}`
+                                ? `Preset ${localCurrentPreset}`
                                 : node.textContent
-                            presets[currentPreset - 1].name = node.textContent
-                            indexedDb.getSet("skinPresets", e => { e[currentPreset - 1].name = node.textContent; return e })
+                            presets[localCurrentPreset - 1].name = node.textContent
+                            indexedDb.getSet("skinPresets", e => { e[localCurrentPreset - 1].name = node.textContent; return e })
                         })
                     }
                 }
@@ -148,7 +152,7 @@
                 }
                 async function modifyButton(button, idx) {
                     if (button?._modified) return;
-                    button.textContent = (await indexedDb.get("skinPresets"))[idx].name || addPresetName(idx);
+                    button.textContent = (await indexedDb.get("skinPresets"))[idx].name || (await addPresetName(idx));
                     button._modified = true
                 }
             })
@@ -225,7 +229,7 @@
     `)
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet]
 
-    function addPresetName(idx) {
+    async function addPresetName(idx) {
         const newName = `Preset ${idx + 1}`
         indexedDb.getSet("skinPresets", e => {
             e[idx].name = newName;
