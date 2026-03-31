@@ -99,11 +99,9 @@
             mutation.addedNodes.forEach(e => {
                 if (typeof e.querySelectorAll === 'function') {
                     e.querySelectorAll(".dialog-select-input option").forEach(node => {
-                        // if (node.nodeType != Node.TEXT_NODE) return;
                         replacePresetText(node)
                     })
                     e.querySelectorAll(".paged-view-page-header .paged-view-page-header-title").forEach(node => {
-                        // if (node.nodeType != Node.TEXT_NODE) return;
                         replacePresetText(node, true)
                     })
                 }
@@ -126,7 +124,6 @@
                             node.textContent = node.textContent == ""
                                 ? `Preset ${localCurrentPreset}`
                                 : node.textContent
-                            presets[localCurrentPreset - 1].name = node.textContent
                             indexedDb.getSet("skinPresets", e => { e[localCurrentPreset - 1].name = node.textContent; return e })
                         })
                     }
@@ -161,13 +158,18 @@
 
     let isObservingPresets = false;
     const gameWrapperObserver = new MutationObserver(() => {
-        const dialog = document.querySelector(".dialog:has( .shop-class-selection-container):has( .ownedCoinsContainer.allow-select)")
-        if (dialog && isObservingPresets === false) {
+        const getDialog = (() => document.querySelector(".dialog:has( .shop-class-selection-container):has( .ownedCoinsContainer.allow-select)"))
+        const dialog = getDialog()
+        if (dialog && !dialog._isObserved) {
             presetThingObserver.observe(dialog, { subtree: true, childList: true })
             isObservingPresets = true;
+            dialog._isObserved = true;
         } else if (!dialog) {
-            presetThingObserver.disconnect()
-            isObservingPresets = false;
+            setTimeout(() => {
+                if (getDialog()) return;
+                presetThingObserver.disconnect()
+                isObservingPresets = false;
+            }, 500);
         }
     })
     gameWrapperObserver.observe(document.querySelector("#gameWrapper"), { childList: true })
