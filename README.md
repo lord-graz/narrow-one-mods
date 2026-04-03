@@ -1,5 +1,5 @@
 # Narrow.One Mods
-#### by Lord Graz
+<span style="font-size: 1.5em">**by Lord Graz**</span>
 
 This is just a place for me to share my Narrow.One coding creations. Usually they are custom UI CSS code or mild JS mods (only DOM modifications).
 
