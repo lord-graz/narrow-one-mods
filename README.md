@@ -16,6 +16,14 @@ A JS script that adds the missing functionality of naming your presets. This all
 
 <img src="/_img/renamePresets01.png" width="400" /> <img src="/_img/renamePresets02.png" width="300" />
   
+## <a href="sortPresets">Sort Presets</a>
+
+This mod allows you to sort your presets by drag-and-drop or by explicitly setting a new index for a preset.  
+  
+Setting a preset index explicitly is also compatible with my <a href="../renamePresets/">renamePresets</a> mod.  
+<br />
+<img src="/_img/sortPresets01.png" width="400"> <img src="/_img/sortPresets02.png" width="450">
+  
 ## <a href="showItemNameInTooltip">Show Item Name in Tooltip</a>  
 JS script to show the name of shop items in their stat tooltip. This can be useful if you want to switch armor/weapons midgame, but the 3D models (needed for you to see what you are equipping) load too slowly, or if you're just interested in easily seeing what the names of the shop items are :) .  
   
@@ -33,4 +41,4 @@ It is availible with a dot, without a dot, as JavaScript or CSS, as you prefer.
   
 This mod allows you to pin shop items to the top of the shop. It can make it easier to find what you are looking for, as often you have to scroll down through a long list of items in the shop.  
 
-<img src="/_img/favoriteShopItems.jpg" width="400">
+<img src="/_img/favoriteShopItems.jpg" width="400">  
